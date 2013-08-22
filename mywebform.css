@@ -1,0 +1,286 @@
+#mywebform-content {
+    font-size: 13px;
+    color: #000;
+    font-family: Areal;
+}
+#mywebform-content table {
+    border: 1px solid #9E9A99;
+    border-collapse: collapse;
+    margin: 3px 0 15px;
+    width: auto;
+    min-width: 100%;
+    font-size: 13px;
+}
+
+#mywebform-content table th,
+#mywebform-content table td {
+    border: 1px solid #9E9A99;
+    padding: 2px 1px;
+    padding: 10px 5px;
+}
+
+#mywebform-content table td.delrow {
+  text-align: center;
+}
+
+#mywebform-content table.no-border,
+#mywebform-content table.no-border tbody,
+#mywebform-content table.no-border th,
+#mywebform-content table.no-border td {
+    border: 0;
+}
+
+#mywebform-content input {
+    /*background-color: #F9F9F9;
+    border-bottom: 1px solid #333333;
+    border-width: 0 0 1px;
+    font-weight: normal; */
+  margin: 6px 0 8px;
+}
+#mywebform-content .selector {
+  margin: 6px 0 8px;
+}
+#mywebform-content table input[type="checkbox"] {
+  margin: 6px 5px 8px 0;
+}
+
+#mywebform-content table select {
+ /* max-width: 200px; */
+}
+
+#mywebform-content input.numeric,
+#mywebform-content input.money,
+#mywebform-content input.float {
+    /*margin: 0 2px 0 0;
+    padding: 0 1px 0 0;*/
+}
+
+#mywebform-content input[type="text"].autofield {
+ /* background-color: #DDDDDD; */
+}
+
+#mywebform-content input.error, select.error,
+#mywebform-content textarea.error {
+  /*outline: 2px solid #ff0000; */
+}
+
+#mywebform-content span.form-item {
+  text-decoration: underline;
+}
+
+#mywebform-content table span.form-item {
+  text-decoration: none;
+}
+
+#mywebform-content table.no-border span.form-item {
+  text-decoration: underline;
+}
+
+#mywebform-error {
+  border: 1px solid #ff0000;
+  background: #ffdcdc;
+  color: #565656;
+  padding: 5px 10px;
+  margin: 0 0 15px 0;
+}
+
+/* GRID */
+#mywebform-content div.grid-wrapper {
+  overflow: auto;
+}
+
+#mywebform-content .grid-addrow {
+  display: block;
+  width: 150px;
+  margin: 2px;
+  padding: 2px;
+  text-align: center;
+  border: 1px solid #b1ae9e;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+tr.drow {
+  display: none;
+}
+
+/* PREVIEW */
+#mywebform-content.preview td.delrow,
+#mywebform-content.preview .grid-addrow {
+  display: none;
+}
+
+#mywebform-content.preview div.grid-wrapper {
+  overflow: visible;
+}
+
+#mywebform-content.preview table th,
+#mywebform-content.preview table td {
+  min-width: 0;
+}
+
+/* PROGRESS BAR */
+.progressbar {
+    background: none repeat scroll 0 0 #AAAAAA;
+    height: 20px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: none;
+}
+
+.progressbar .current {
+    background: none repeat scroll 0 0 #45ABCD;
+    height: 20px;
+    position: absolute;
+    text-align: right;
+    width: 1%;
+    z-index: 100;
+    display: none;
+}
+
+.progressbar .current span {
+    color: #FEFEFE;
+    font-weight: bold;
+    line-height: 20px;
+    padding-right: 5px;
+}
+
+.progressbar span.comment {
+    display: block;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 10px;
+    position: absolute;
+    z-index: 1020;
+}
+
+#multistep-navigation-inline {
+  padding: 20px 0;
+}
+
+#mywebform-multistep ul {
+  list-style-type: none;
+  list-style-image: none;
+}
+
+#mywebform-multistep li {
+  float: left;
+  padding: 0 10px;
+}
+
+div.clear-both {
+  clear:both;
+  font-size:0;
+  height:0;
+  line-height:0;
+}
+
+#mywebform-content {
+  padding: 20px 0 0 0;
+}
+
+
+#mywebform-edit-form #uniform-edit-submit {
+  margin: 0 0 0 10px;
+}
+
+#mywebform-error ul,
+#mywebform-error li {
+  list-style-type: none;
+  list-style-image: none;
+}
+
+#mywebform-content .form-required {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+#mywebform-content .print {
+  font-family: "Times New Roman",Times,"Nimbus Roman No9 L","FreeSerif","Liberation Serif",serif;
+}
+#mywebform-content .print table ,
+#mywebform-content .print table tbody,
+#mywebform-content .print table tr,
+#mywebform-content .print table td {
+  background: none;
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+  font-size: 11pt;
+}
+
+#mywebform-content .print .document {
+  font-size: 11pt;
+}
+
+#mywebform-content .print .document-title {
+  text-align: right;
+  font-size: 12pt;
+}
+
+#mywebform-content .print .header-info {
+  font-size: 10pt;
+}
+
+#mywebform-content .print .header-table td {
+  padding: 0 0 0 3mm;
+}
+#mywebform-content .print .first-table {
+  border-top: 1px solid #000;
+}
+#mywebform-content .print .common-table {
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+#mywebform-content .print .common-table td {
+  vertical-align: top;
+}
+#mywebform-content .print .common-table input {
+  margin: 0 2mm 0 0;
+}
+
+#mywebform-content .print .dinamic-creator-table thead td {
+  text-align: center;
+  padding: 0;
+}
+#mywebform-content .print .dinamic-creator-table td {
+  border: 1px solid #000;
+  padding: 0 0 0 2mm;
+}
+
+#mywebform-content .print .attached-documents-inline-left thead td {
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  height: 15mm;
+  padding: 0 0 0 2mm;
+}
+#mywebform-content .print .attached-documents-inline-right thead td {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  height: 15mm;
+  padding: 0 0 0 2mm;
+}
+#mywebform-content .print .attached-documents-inline-right thead td.last {
+  border-left: 1px solid #000;
+}
+#mywebform-content .print .attached-documents-inline-left tbody td {
+  padding: 0 0 0 2mm;
+  border-right: 1px solid #000;
+}
+#mywebform-content .print .attached-documents-inline-right tbody td {
+  padding: 0 0 0 2mm;
+  border-right: 1px solid #000;
+}
+#mywebform-content .print .attached-documents-inline-right tbody td.center,
+#mywebform-content .print .attached-documents-inline-left tbody td.center {
+  text-align: center;
+  padding: 0;
+}
+
+#mywebform-content .print table {
+  width:100%;
+}

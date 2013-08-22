@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * Implements hook_schema()
+ */
+function mywebform_schema() {
+  $schema['mywebforms'] = array(
+    'fields' => array(
+      'id'                       => array('type' => 'serial',  'not null' => TRUE,  'unsigned' => TRUE, ),
+      'tid'                      => array('type' => 'int',     'not null' => TRUE,  'unsigned' => TRUE, ),
+      'tech_name'                => array('type' => 'varchar', 'not null' => TRUE,  'length' => 32, ),
+      'name'                     => array('type' => 'varchar', 'not null' => TRUE,  'length' => 128, 'default' => '', ),
+      'title'                    => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255, 'default' => '', ),
+      'html_template'            => array('type' => 'text',    'not null' => FALSE, ),
+      'autofields'               => array('type' => 'text',    'not null' => FALSE, ),
+      'aux'                      => array('type' => 'text',    'not null' => FALSE, ),
+      'status'               		 => array('type' => 'int',     'not null' => TRUE,  'default' => '1', ),
+      'created'                  => array('type' => 'int',     'not null' => TRUE, ),
+      'document_destination_tid' => array('type' => 'int',     'not null' => TRUE,  'unsigned' => TRUE, ),
+      'weight'                   => array('type' => 'int', 'not null' => TRUE, 'default' => '0'),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'name_key' => array('tech_name'),
+    ),
+  );
+
+  $schema['mywebform_files'] = array(
+    'fields' => array(
+      'id'           => array('type' => 'serial',  'not null' => TRUE, 'unsigned' => TRUE, ),
+      'mywebform_id' => array('type' => 'int',     'not null' => TRUE, 'unsigned' => TRUE, ),
+      'type'         => array('type' => 'varchar', 'not null' => TRUE, 'length' => 32, 'default' => '', ),
+      'fid'     		 => array('type' => 'int',     'not null' => TRUE, 'unsigned' => TRUE, ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  $schema['mywebform_fields'] = array(
+    'fields' => array(
+      'id'             => array('type' => 'serial',  'not null' => TRUE,  'unsigned' => TRUE, ),
+      'mywebform_id'   => array('type' => 'int',     'not null' => TRUE,  'unsigned' => TRUE, ),
+      'name'           => array('type' => 'varchar', 'not null' => TRUE,  'length' => 128, 'default' => '', ),
+      'title'          => array('type' => 'varchar', 'not null' => TRUE,  'length' => 128, 'default' => '', ),
+      'xpath'          => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255, 'default' => '', ),
+      'grid_name'      => array('type' => 'varchar', 'not null' => TRUE,  'length' => 128, 'default' => '', ),
+      'type'           => array('type' => 'varchar', 'not null' => TRUE,  'length' => 32,  'default' => '', ),
+      'widget'         => array('type' => 'varchar', 'not null' => TRUE,  'length' => 32,  'default' => '', ),
+      'container'      => array('type' => 'varchar', 'not null' => TRUE,  'length' => 64,  'default' => '', ),
+      'format'         => array('type' => 'varchar', 'not null' => TRUE,  'length' => 10,  'default' => '', ),
+      'upload_file_extensions' => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255,  'default' => '', ),
+      'max_file_size'  => array('type' => 'varchar', 'not null' => TRUE,  'length' => 32,  'default' => '', ),
+      'ignore_empty'   => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'export_result'  => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'force_def_val'  => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'disabled'       => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'readonly'       => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'required'       => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'may_be_required' => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'weight'         => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'default_value'  => array('type' => 'text',    'not null' => FALSE, ),
+      'options'        => array('type' => 'text',    'not null' => FALSE, ),
+      'attributes'     => array('type' => 'text',    'not null' => FALSE, ),
+      'class'          => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255, 'default' => '', ),
+      'rows'           => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'help_url_type'  => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'help_url'       => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255,  'default' => '', ),
+      'help_url_text'  => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255,  'default' => '', ),
+      'minlength'      => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'maxlength'      => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'decimal_length' => array('type' => 'int',     'not null' => TRUE,  'default' => 0, ),
+      'aux'            => array('type' => 'text',    'not null' => FALSE, ),
+      'status'         => array('type' => 'int',     'not null' => TRUE,  'default' => '1', ),
+      'created'        => array('type' => 'int',     'not null' => TRUE, ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'name_key' => array('name', 'mywebform_id'),
+    ),
+  );
+
+  $schema['mywebform_forms'] = array(
+    'fields' => array(
+      'id'          => array('type' => 'serial',  'not null' => TRUE, 'unsigned' => TRUE, ),
+      'hash'        => array('type' => 'varchar', 'not null' => TRUE, 'length' => 64, ),
+      'uid'         => array('type' => 'int',     'not null' => TRUE, 'unsigned' => TRUE, ),
+      'data_serial' => array('type' => 'text',    'not null' => FALSE, 'size' => 'big', ),
+      'created'     => array('type' => 'int',     'not null' => TRUE, 'unsigned' => TRUE, ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'hash_key' => array('hash'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Performs module installation
+ */
+function mywebform_install() {
+
+}
+
+/**
+ * Performs module uninstallation
+ */
+function mywebform_uninstall() {
+  variable_del('mywebform_attachments_amount');
+  variable_del('mywebform_vid');
+  variable_del('mywebform_user_defined_values');
+}

@@ -1,0 +1,6 @@
+name = "My webform"
+description = "Defines a custom webform."
+package = "Deeplace"
+core = "6.x"
+version = "6.x-1.0"
+

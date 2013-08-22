@@ -1,0 +1,246 @@
+<?php
+
+require_once 'mywebform.api.inc';
+require_once 'mywebform.class.inc';
+
+/**
+ * Implements hook_perm()
+ */
+function mywebform_perm() {
+  return array(
+    'mywebform admin',
+  );
+}
+
+/**
+ * Implements hook_menu()
+ */
+function mywebform_menu() {
+  $items = array();
+  
+  $items['admin/settings/mywebform'] = array(
+    'title'            => 'My webform',
+    'description'      => "Configure module's settings",
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_settings_form'),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_NORMAL_ITEM,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform'] = array(
+    'title'            => 'My webform',
+    'description'      => 'Manage the webforms',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_manage_form'),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_NORMAL_ITEM,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/view'] = array(
+    'title'            => 'View',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_manage_form'),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+    'weight'           => 0,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/add'] = array(
+    'title'            => 'Add',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_type_edit_form'),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 1,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform'] = array(
+    'title'            => 'Webform',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_manage_fields_form', 3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/view'] = array(
+    'title'            => 'View',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_manage_fields_form', 3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+    'weight'           => 0,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/edit'] = array(
+    'title'            => 'Edit',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_type_edit_form', 3, FALSE),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 1,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/add-field'] = array(
+    'title'            => 'Add field',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_field_edit_form', NULL, 3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 2,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/import-fields'] = array(
+    'title'            => 'Import fields',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_import_fields_form', 3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 3,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/export-fields'] = array(
+    'title'            => 'Export fields',
+    'page callback'    => 'mywebform_export_fields_page',
+    'page arguments'   => array(3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/%mywebform/delete'] = array(
+    'title'            => 'Delete webform',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_type_delete_form', 3),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/field/%mywebform_field'] = array(
+    'title'            => 'View field',
+    'page callback'    => 'mywebform_field_page',
+    'page arguments'   => array(4),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/field/%mywebform_field/view'] = array(
+    'title'            => 'View',
+    'page callback'    => 'mywebform_field_page',
+    'page arguments'   => array(4),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+    'weight'           => 0,
+    'file'             => 'mywebform.admin.inc',
+  );
+  
+  $items['admin/build/mywebform/field/%mywebform_field/edit'] = array(
+    'title'            => 'Edit',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_field_edit_form', 4, NULL, FALSE),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 1,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['admin/build/mywebform/field/%mywebform_field/delete'] = array(
+    'title'            => 'Delete field',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('mywebform_field_delete_form', 4),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.forms.inc',
+  );
+  
+  $items['mywebform/predefined/autocomplete'] = array(
+    'title'            => 'Predefined values',
+    'page callback'    => 'mywebform_predefined_autocomplete_page',
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.pages.inc',
+  );
+  
+  $items['mywebform/data/%'] = array(
+    'title'            => 'Webform',
+    'page callback'    => 'mywebform_data_page',
+    'page arguments'   => array(2),
+    'access arguments' => array('access content'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.pages.inc',
+  );
+  
+  $items['mywebform/test/%'] = array(
+    'title'            => 'Webform',
+    'page callback'    => 'mywebform_edit_form',
+    'page arguments'   => array(2),
+    'access arguments' => array('mywebform admin'),
+    'type'             => MENU_CALLBACK,
+  );
+  
+  $items['mywebform/xsd/%'] = array(
+    'title'            => 'XSD',
+    'page callback'    => 'mywebform_xsd_page',
+    'page arguments'   => array(2),
+    'access arguments' => array('access content'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'mywebform.pages.inc',
+  );
+  
+  return $items;
+}
+
+/**
+ * Implements hook_theme()
+ */
+function mywebform_theme($existing, $type, $theme, $path) {
+  return array(
+    'mywebform_manage_form' => array(
+      'form' => NULL,
+      'function' => NULL,
+    ),
+  );
+}
+
+/**
+ * Implements hook_cron()
+ */
+function mywebform_cron() {
+  db_query("DELETE FROM {mywebform_forms} WHERE created <= %d", time() - 3600);
+}
+
+function mywebform_locale($op = 'groups') {
+  switch ($op) {
+    case 'groups':
+      return array('mywebform' => t('Webform'));
+  }
+}
+
+/**
+ * Just for test
+ */
+function mywebform_edit_form($tech_name) {
+  try {
+    $form = new WebForm($tech_name, '', 'mywebform_edit_form_submit');
+    return $form->Render();
+  }
+  catch(WebFormException $e) {
+    drupal_not_found();
+    exit();
+  }
+}
+
+function mywebform_edit_form_submit($form) {
+  var_dump($form->errors);
+  exit($form->OutputXml());
+}

@@ -1,0 +1,244 @@
+#mywebform-content table {
+    border: 1px solid #9E9A99;
+    border-collapse: collapse;
+    margin: 3px 0 15px;
+    width: auto;
+    min-width: 100%;
+}
+
+#mywebform-content table th,
+#mywebform-content table td {
+    border: 1px solid #9E9A99;
+    padding: 2px 1px;
+	min-width: 100px;
+}
+
+#mywebform-content table.no-border,
+#mywebform-content table.no-border tbody,
+#mywebform-content table.no-border th,
+#mywebform-content table.no-border td {
+    border: 0;
+}
+
+#mywebform-content input[type=text] {
+    background-color: #F9F9F9;
+    border-bottom: 1px solid #333333;
+    border-width: 0 0 1px;
+    font-weight: normal;
+}
+
+#mywebform-content table input[type="text"] {
+    background-color: #F9F9F9;
+    border-bottom: 1px dotted #333333;
+    border-width: 0 0 1px;
+    font-weight: normal;
+    width: 90%;
+}
+
+#mywebform-content table select {
+	font-size: 6.5pt;
+	max-width: 200px;
+}
+
+#mywebform-content input.numeric,
+#mywebform-content input.money,
+#mywebform-content input.float {
+    margin: 0 2px 0 0;
+    padding: 0 1px 0 0;
+    text-align: right;
+}
+
+#mywebform-content input[type="text"].autofield {
+	background-color: #DDDDDD;
+}
+
+#mywebform-content input.error, select.error {
+	outline: 2px solid #ff0000;
+}
+
+table.DynarchCalendar-topCont {
+	width: auto;
+}
+
+#mywebform-content span.form-item {
+	text-decoration: underline;
+}
+
+#mywebform-content table span.form-item {
+	text-decoration: none;
+}
+
+#mywebform-content table.no-border span.form-item {
+	text-decoration: underline;
+}
+
+#mywebform-error {
+	border: 1px solid #ff0000;
+	background: #ffdcdc;
+	color: #565656;
+	padding: 5px 10px;
+	margin: 0 0 15px 0;
+}
+
+/* GRID */
+#mywebform-content div.grid-wrapper {
+	overflow: auto;
+}
+
+#mywebform-content .grid-addrow,
+#mywebform-content .grid-upload {
+	display: block;
+	width: 150px;
+	margin: 2px;
+	padding: 2px;
+	text-align: center;
+	border: 1px solid #b1ae9e;
+	color: #000000;
+	background-color: #ffffff;
+	float: left;
+}
+
+#mywebform-content table.grid {
+	clear: both;
+}
+
+tr.drow {
+	display: none;
+}
+
+.grid-scroll {
+}
+
+.grid-scroll ul {
+	padding: 0;
+	clear: both;
+}
+
+.grid-scroll ul li {
+	list-style-type: none;
+	padding: 0;
+}
+
+.grid-scroll ul.scroll li {
+	float: left;
+	padding: 0 3px;
+}
+
+.grid-scroll ul.scroll li a {
+	display: block;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	margin: 0;
+	text-indent: 50px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.grid-scroll ul.scroll li a:hover {
+	outline: 1px solid #efefef;
+}
+
+.grid-scroll ul.scroll li a.scroll-start {
+	background: url('images/start.png') no-repeat;
+}
+
+.grid-scroll ul.scroll li a.scroll-end {
+	background: url('images/end.png') no-repeat;
+}
+
+.grid-scroll ul.scroll li a.scroll-up {
+	background: url('images/up.png') no-repeat;
+}
+
+.grid-scroll ul.scroll li a.scroll-down {
+	background: url('images/down.png') no-repeat;
+}
+
+.grid-scroll ul.scroll li a.scroll-pgup {
+	background: url('images/pgup.png') no-repeat;
+}
+
+.grid-scroll ul.scroll li a.scroll-pgdn {
+	background: url('images/pgdn.png') no-repeat;
+}
+
+.grid-scroll ul.pages li {
+	float: left;
+	padding: 2px 10px;
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+/* PREVIEW */
+#mywebform-content.preview td.delrow,
+#mywebform-content.preview .grid-addrow {
+	display: none;
+}
+
+#mywebform-content.preview div.grid-wrapper {
+	overflow: visible;
+}
+
+#mywebform-content.preview table th,
+#mywebform-content.preview table td {
+	min-width: 0;
+}
+
+/* PROGRESS BAR */
+.progressbar {
+    background: none repeat scroll 0 0 #AAAAAA;
+    height: 20px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: none;
+}
+
+.progressbar .current {
+    background: none repeat scroll 0 0 #45ABCD;
+    height: 20px;
+    position: absolute;
+    text-align: right;
+    width: 1%;
+    z-index: 100;
+    display: none;
+}
+
+.progressbar .current span {
+    color: #FEFEFE;
+    font-weight: bold;
+    line-height: 20px;
+    padding-right: 5px;
+}
+
+.progressbar span.comment {
+    display: block;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 10px;
+    position: absolute;
+    z-index: 1020;
+}
+
+#mywebform-upload-grid-xml-form-wrapper {
+	position: fixed;
+	background: #fff;
+	border: 1px solid #606060;
+	top: 50%;
+	left: 50%;
+	width: 500px;
+	height: 150px;
+	margin-top: -75px;
+	margin-left: -250px;
+	z-index: 10000;
+}
+
+#mywebform-upload-grid-xml-form-wrapper form {
+	padding: 10px;
+}
+
+#mywebform-upload-grid-xml-form-wrapper form #edit-xml-file {
+	max-width: 400px;
+}

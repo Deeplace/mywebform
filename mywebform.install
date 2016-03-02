@@ -12,6 +12,8 @@ function mywebform_schema() {
       'name'            => array('type' => 'varchar', 'not null' => TRUE,  'length' => 128, 'default' => ''),
       'title'           => array('type' => 'varchar', 'not null' => TRUE,  'length' => 255, 'default' => ''),
       'html_template'   => array('type' => 'text',    'not null' => FALSE),
+      'html_preview_template'   => array('type' => 'text',    'not null' => FALSE),
+      'html_print_template'   => array('type' => 'text',    'not null' => FALSE),
       'autofields'      => array('type' => 'text',    'not null' => FALSE),
       'aux'             => array('type' => 'text',    'not null' => FALSE),
       'status'          => array('type' => 'int',     'not null' => TRUE,  'default' => '1'),
@@ -25,7 +27,7 @@ function mywebform_schema() {
       'name_key' => array('tech_name'),
     ),
   );
-  
+
   $schema['mywebform_files'] = array(
     'fields' => array(
       'id'           => array('type' => 'serial',  'not null' => TRUE, 'unsigned' => TRUE),
@@ -35,7 +37,7 @@ function mywebform_schema() {
     ),
     'primary key' => array('id'),
   );
-  
+
   $schema['mywebform_fields'] = array(
     'fields' => array(
       'id'             => array('type' => 'serial',  'not null' => TRUE,  'unsigned' => TRUE),
@@ -73,7 +75,7 @@ function mywebform_schema() {
       'name_key' => array('name', 'mywebform_id'),
     ),
   );
-  
+
   $schema['mywebform_forms'] = array(
     'fields' => array(
       'id'          => array('type' => 'serial',  'not null' => TRUE, 'unsigned' => TRUE),
@@ -87,7 +89,7 @@ function mywebform_schema() {
       'hash_key' => array('hash'),
     ),
   );
-  
+
   return $schema;
 }
 
@@ -105,7 +107,7 @@ function mywebform_uninstall() {
   variable_del('mywebform_attachments_amount');
   variable_del('mywebform_vid');
   variable_del('mywebform_user_defined_values');
-  
+
   drupal_uninstall_schema('mywebform');
 }
 
@@ -114,7 +116,7 @@ function mywebform_uninstall() {
  */
 function mywebform_update_6001(&$sandbox) {
   $ret = array();
-  
+
   db_add_field(
     $ret,
     'mywebforms',
@@ -127,6 +129,38 @@ function mywebform_update_6001(&$sandbox) {
     'pattern',
     array('type' => 'varchar', 'not null' => TRUE,  'length' => 255, 'default' => '')
   );
-  
+
+  return $ret;
+}
+
+/**
+ * Implements hook_update_N()
+ */
+function mywebform_update_6002(&$sandbox) {
+  $ret = array();
+
+  db_add_field(
+    $ret,
+    'mywebforms',
+    'html_print_template',
+    array('type' => 'text',    'not null' => FALSE)
+  );
+
+  return $ret;
+}
+
+/**
+ * Implements hook_update_N()
+ */
+function mywebform_update_6003(&$sandbox) {
+  $ret = array();
+
+  db_add_field(
+    $ret,
+    'mywebforms',
+    'html_preview_template',
+    array('type' => 'text',    'not null' => FALSE)
+  );
+
   return $ret;
 }

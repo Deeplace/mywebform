@@ -335,3 +335,27 @@ function serialize (mixed_value) {
     }    return val;
 }
 
+function explode(delimiter, string) {
+  var emptyArray = {0: ''};
+
+  if (arguments.length != 2
+    || typeof arguments[0] == 'undefined'
+    || typeof arguments[1] == 'undefined') {
+    return emptyArray;
+  }
+
+  if (delimiter === ''
+    || delimiter === false
+    || delimiter === null) {
+    return emptyArray;
+  }
+
+  if (typeof delimiter == 'function'
+    || typeof delimiter == 'object'
+    || typeof string == 'function'
+    || typeof string == 'object') {
+    return emptyArray;
+  }
+
+  return string.toString().split(delimiter.toString());
+}

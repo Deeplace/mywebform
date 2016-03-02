@@ -28,7 +28,6 @@ Drupal.behaviors.grid = function (context) {
 			grid_remove_row($(this));
 		});
 	}
-	
 	grid_load_data();
 }
 

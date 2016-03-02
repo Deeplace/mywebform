@@ -2,7 +2,7 @@
 
 /**
  * Inserts a complex file field in form
- * 
+ *
  * @param string $name - name of the element
  * @param string $group_title - name of fieldset
  * @param string $item_title - name of the file field
@@ -18,31 +18,37 @@ function _mywebform_file_item($name, $group_title, $item_title, $file) {
       '#title' => $group_title,
     );
     
+    $filepath = empty($file->locked) ? mywebform_files_dir() .'/' . $file->filename : $file->filename;
+    
     $item['file_view'] = array(
       '#type' => 'item',
       '#title' => t('Uploaded file'),
-      '#value' => l($file->filename, mywebform_files_dir() .'/' . $file->filename, array('language' => language_default())),
+      '#value' => l($file->filename, $filepath, array('language' => language_default())),
       '#prefix' => '<div class="file-view">',
       '#suffix' => '</div>',
     );
     
-    $item['remove_' . $name] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Remove file'),
-    );
+    if (empty($file->locked)) {
+      $item['remove_' . $name] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Remove file'),
+      );
+    }
   }
   
-  $item[$name] = array(
-    '#type' => 'file',
-    '#title' => $item_title,
-  );
+  if (empty($file->locked)) {
+    $item[$name] = array(
+      '#type' => 'file',
+      '#title' => $item_title,
+    );
+  }
   
   return $item;
 }
 
 /**
  * Uploads the file to module's file directory and returns its object
- * 
+ *
  * @param array $form_state - drupal $form_state taken from form submit callback
  * @param string $form_item - field's name
  * @param string $extensions - the needed extensions separated by space to match file
@@ -51,7 +57,13 @@ function _mywebform_file_item($name, $group_title, $item_title, $file) {
  *                  function fails, the return is NULL.
  */
 function _mywebform_get_uploaded_file($form_state, $form_item, $extensions, $obj) {
-  if(!is_object($obj)) $obj = new stdClass();
+  if (!is_object($obj)) {
+    $obj = new stdClass();
+  }
+  
+  if (!empty($obj->locked)) {
+    return NULL;
+  }
   
   if($form_state['values']['remove_'. $form_item] && !empty($obj->filename)) {
     file_delete(mywebform_files_dir() . '/' . $obj->filename);

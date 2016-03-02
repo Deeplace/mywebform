@@ -72,7 +72,20 @@ function grid_load_data() {
 		row.find('span.form-item').each(function (i) {
 			var fieldName = $(this).attr('field');
 			var id = fieldName + '-' + index;
-			$(this).attr('id', id).html(Drupal.settings.mywebform.values[fieldName][index]);
+      if (Drupal.settings.mywebform.fields[fieldName].widget == 'file') {
+        if (Drupal.settings.mywebform.values[fieldName + '_files'][index]) {
+          var file = Drupal.settings.mywebform.values[fieldName + '_files'][index];
+          $(this).find('.file').addClass(file.ext);
+          $(this).find('.filename').html(file.filelink);
+          $(this).find('.filesize').html(file.size);
+        }
+        else {
+          $(this).hide();
+        }
+      }
+      else {
+        $(this).attr('id', id).html(Drupal.settings.mywebform.values[fieldName][index]);
+      }
 		});
 		
 		// Insert row in table

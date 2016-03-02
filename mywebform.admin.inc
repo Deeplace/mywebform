@@ -63,6 +63,9 @@ function theme_mywebform_manage_form($form) {
   if (!empty($form['export'])) {
     $output .= drupal_render($form['export']);
   }
+  if (!empty($form['export_json'])) {
+    $output .= drupal_render($form['export_json']);
+  }
   
   $output .= drupal_render($form['options']);
   
@@ -227,15 +230,19 @@ function mywebform_manage_fields_form($form_state, $webform = NULL) {
   
   drupal_set_title(t('Declaration type <em>@name</em>', array('@name' => $webform->name)));
   
-  $result = db_query("SELECT * FROM {mywebform_fields} WHERE mywebform_id = %d " . tablesort_sql($header), $webform->id);
-  while ($data = db_fetch_object($result)) {
-    $rows[$data->id] = array(
+  foreach ($webform->fields as $data) {
+    $operations = array();
+    if (!in_array('fields', $webform->readonly)) {
+      $operations[] = l(t('Edit'), 'admin/build/mywebform/field/' . $data->id . '/edit');
+    }
+    $key = empty($data->id) ? $data->name : $data->id;
+    $rows[$key] = array(
       l($data->name, 'admin/build/mywebform/field/' . $data->id . '/view'),
       t($data->title),
       $data->type,
       $data->widget,
       $data->status ? t('Enabled') : t('Disabled'),
-      l(t('Edit'), 'admin/build/mywebform/field/' . $data->id . '/edit'),
+      implode(' ', $operations),
     );
   }
   
@@ -250,6 +257,11 @@ function mywebform_manage_fields_form($form_state, $webform = NULL) {
   $form['export'] = array(
     '#type' => 'item',
     '#value' => l(t('Export fields'), 'admin/build/mywebform/' . $webform->id . '/export-fields'),
+  );
+  
+  $form['export_json'] = array(
+    '#type' => 'item',
+    '#value' => l(t('Export fields to JSON'), 'admin/build/mywebform/' . $webform->id . '/export-json'),
   );
   
   $form['options'] = array(
@@ -277,6 +289,14 @@ function mywebform_manage_fields_form($form_state, $webform = NULL) {
     '#type' => 'checkboxes',
     '#options' => $checks,
   );
+  
+  if (in_array('fields', $webform->readonly)) {
+    $path = mywebform_resource_path($webform->tech_name);
+    $message = t("Webform's fields are readonly because they are hardcoded! See !file",
+      array('!file' => '<a href="/' . $path . '/fields.json' . '">fields.json</a>'));
+    drupal_set_message($message, 'warning');
+    unset($form['checks'], $form['options']);
+  }
   
   return $form;
 }
@@ -399,4 +419,91 @@ function mywebform_export_fields_page($webform) {
   }
   
   php_excel_export_table($header, $rows, $webform->tech_name . '.xls');
+}
+
+function mywebform_export_json_page($webform) {
+  drupal_set_header('Content-Type: application/json');
+  
+  $types = array();
+  $schema = drupal_get_schema('mywebform_fields');
+  foreach ($schema['fields'] as $key => $data) {
+    $types[$data['type']][] = $key;
+  }
+  
+  $fields = array();
+  foreach ($webform->fields as $name => $obj) {
+    // Convert object to array for easier processing
+    $field = (array) $obj;
+    unset($field['id'], $field['mywebform_id'], $field['created']);
+    
+    // Cast types according to their schema
+    foreach ($field as $key => $value) {
+      if (in_array($key, $types['int'])) {
+        $field[$key] = (int) $value;
+      }
+    }
+    
+    $fields[$name] = $field;
+  }
+  
+  // Export JSON in a beautified mode
+  $json = drupal_to_js($fields);
+  echo _json_beautify($json);
+  exit();
+}
+
+/**
+ * Indents a flat JSON string to make it more human-readable.
+ *
+ * @param string $json The original JSON string to process.
+ *
+ * @return string Indented version of the original JSON string.
+ */
+function _json_beautify($json) {
+  $result      = '';
+  $pos         = 0;
+  $strLen      = strlen($json);
+  $indentStr   = '  ';
+  $newLine     = "\n";
+  $prevChar    = '';
+  $outOfQuotes = true;
+
+  for ($i = 0; $i <= $strLen; $i++) {
+    // Grab the next character in the string.
+    $char = substr($json, $i, 1);
+
+    // Are we inside a quoted string?
+    if ($char == '"' && $prevChar != '\\') {
+      $outOfQuotes = !$outOfQuotes;
+      // If this character is the end of an element,
+      // output a new line and indent the next line.
+    }
+    elseif (($char == '}' || $char == ']') && $outOfQuotes) {
+      $result .= $newLine;
+      $pos--;
+      for ($j = 0; $j < $pos; $j++) {
+        $result .= $indentStr;
+      }
+    }
+
+    // Add the character to the result string.
+    $result .= $char;
+
+    // If the last character was the beginning of an element,
+    // output a new line and indent the next line.
+    if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
+      $result .= $newLine;
+      if ($char == '{' || $char == '[') {
+        $pos++;
+      }
+
+      for ($j = 0; $j < $pos; $j++) {
+        $result .= $indentStr;
+      }
+    }
+
+    $prevChar = $char;
+  }
+
+  return $result;
 }

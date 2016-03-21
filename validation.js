@@ -301,7 +301,7 @@ webform.validators.validateForm = function () {
             msg = Drupal.t('Wrong field format: period needed');
             break;
           case 'latintext':
-            pattern = "^[A-Za-z0-9.,]*$";
+            pattern = "^[A-Za-z0-9.,-]*$";
             msg = Drupal.t('Wrong field format: latin text needed');
             break;
           case 'numeric':

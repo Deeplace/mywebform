@@ -402,16 +402,16 @@ class WebForm {
       $value = (isset($field->value) && strlen($field->value)) ? $field->value : '';
     }
 
-    if($preview && $field->type == 'money' && !empty($field->value)) {
-      $value = str_replace('.', '-', $field->value);
+    if($preview && $field->type == 'money' && !empty($value)) {
+      $value = str_replace('.', '-', $value);
     }
 
-    if($preview && $field->type == 'money' && $field->aux['text_format_in_preview'] == '1' && !empty($field->value)) {
-      $value = numberToString($field->value);
+    if($preview && $field->type == 'money' && $field->aux['text_format_in_preview'] == '1' && !empty($value)) {
+      $value = numberToString($value);
     }
 
-    if($preview && $field->type == 'date' && !empty($field->aux['date_format_in_preview']) && !empty($field->value)) {
-      $value = format_date(strtotime($field->value), 'custom', $field->aux['date_format_in_preview'], NULL, 'ro');
+    if($preview && $field->type == 'date' && !empty($field->aux['date_format_in_preview']) && !empty($value)) {
+      $value = format_date(strtotime($value), 'custom', $field->aux['date_format_in_preview'], NULL, 'ro');
     }
 
     $value = filter_xss($value);

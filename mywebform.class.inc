@@ -297,9 +297,7 @@ class WebForm {
       $output .= '<input type="hidden" id="clicked-button" name="clicked_button" />';
       $output .= '<input id="edit-submit" class="form-submit" type="submit" value="' . t('Save') . '" name="op" />';
       $output .= '<input id="edit-save-close" class="form-submit" type="submit" value="' . t('Save and close') . '" name="op" />';
-      $output .= '<input id="edit-save-sign" class="form-submit" type="submit" value="' . t('Save and sign') . '" name="op" />';
-      $output .= '<input id="edit-save-sign-send" class="form-submit" type="submit" value="' . t('Save and sign and send') . '" name="op" />';
-      $output .= '<input id="edit-save-send" class="form-submit" type="submit" value="' . t('Save and send') . '" name="op" />';
+
       if (!empty($this->cancel_url)) {
         $output .= l(t('Close'), $this->cancel_url, array('attributes' => array('class' => 'form-cancel')));
       }

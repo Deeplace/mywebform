@@ -115,7 +115,12 @@ function mywebform_xsd_page($tech_name = '') {
         if (!isset($node[$item])) {
           $node[$item] = array();
         }
-        $node = &$node[$item];
+        if (is_array($node[$item])) {
+          $node = &$node[$item];
+        } else {
+          $node[$item] = array($item => $node[$item]);
+          $node = &$node[$item];
+        }
       }
       $node = $name;
     }

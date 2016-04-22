@@ -401,11 +401,11 @@ class WebForm {
     }
 
     if($preview && $field->type == 'money' && !empty($value)) {
-      $value = str_replace('.', '-', $value);
-    }
-
-    if($preview && $field->type == 'money' && $field->aux['text_format_in_preview'] == '1' && !empty($value)) {
-      $value = numberToString($value);
+      if ($field->aux['text_format_in_preview'] == '1' ) {
+        $value = numberToString($value);
+      } else {
+        $value = str_replace('.', '-', $value);
+      }
     }
 
     if($preview && $field->type == 'date' && !empty($field->aux['date_format_in_preview']) && !empty($value)) {

@@ -115,12 +115,10 @@ function mywebform_xsd_page($tech_name = '') {
         if (!isset($node[$item])) {
           $node[$item] = array();
         }
-        if (is_array($node[$item])) {
-          $node = &$node[$item];
-        } else {
-          $node[$item] = array($item => $node[$item]);
-          $node = &$node[$item];
+        if (!is_array($node[$item])) {
+          $node[$item] = array('#mixed' => TRUE);
         }
+        $node = &$node[$item];
       }
       $node = $name;
     }
@@ -130,6 +128,18 @@ function mywebform_xsd_page($tech_name = '') {
   
   $output = '<?xml version="1.0" encoding="utf-8"?>';
   $output .= '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">';
+
+  $output .= '<xs:simpleType name="localDateType">
+                <xs:restriction base="xs:string">
+                  <xs:pattern value="((\d{1,2}(-|/|.)\d{1,2}(-|/|.)\d{2,4})|(\d{2,4}(-|/|.)\d{1,2}(-|/|.)\d{1,2}))"/>
+                </xs:restriction>
+              </xs:simpleType>';
+
+  $output .= '<xs:simpleType name="localDecimalType">
+                <xs:restriction base="xs:string">
+                </xs:restriction>
+              </xs:simpleType>';
+
   $output .= _mywebform_generate_xsd_node($webform, $schema);
   $output .= '</xs:schema>';
   
@@ -146,7 +156,7 @@ function _mywebform_generate_xsd_node($webform, $schema, $name = '') {
       'numeric' => 'xs:decimal',
       'money' => 'xs:decimal',
       'float' => 'xs:decimal',
-      'date' => 'xs:date',
+      'date' => 'localDateType',
     );
     $grids = array();
     foreach ($webform->fields as $field) {
@@ -183,8 +193,12 @@ function _mywebform_generate_xsd_node($webform, $schema, $name = '') {
         $output .= '<xs:all>';
       }
       else {
+        $mixed = '';
+        if (isset($schema['#mixed'])) {
+          $mixed = ' mixed="true"';
+        }
         $output .= '<xs:element name="' . $name . '">';
-        $output .= '<xs:complexType>';
+        $output .= '<xs:complexType' . $mixed . '>';
         $output .= '<xs:all>';
       }
     }
@@ -194,8 +208,9 @@ function _mywebform_generate_xsd_node($webform, $schema, $name = '') {
     }
     
     if (!empty($name)) {
-      if ($name == 'dec') {
+      if ($name == 'dec' || $name == 'doc') {
         $output .= '</xs:all>';
+        $output .= '<xs:attribute name="TypeTechName" type="xs:string" use="required"/>';
         $output .= '<xs:attribute name="TypeName" type="xs:string" use="required"/>';
         $output .= '</xs:complexType>';
         $output .= '</xs:element>';
@@ -240,6 +255,7 @@ function _mywebform_generate_xsd_node($webform, $schema, $name = '') {
     $output .= '<xs:simpleType>';
     
     $type = empty($map[$field->type]) ? 'xs:string' : $map[$field->type];
+    $type = $type == 'xs:decimal' && !$field->required ? 'localDecimalType' : $type;
     
     $output .= '<xs:restriction base="' . $type . '">';
     
@@ -255,17 +271,32 @@ function _mywebform_generate_xsd_node($webform, $schema, $name = '') {
         $output .= '<xs:pattern value="((L/(0[1-9]|1[0-2])/20[0-9]{2,2})|(T/0[1-4]/20[0-9]{2,2})|(S/0[1-2]/20[0-9]{2,2})|(A/20[0-9]{2,2}))"/>';
       }
     }
-    
-    if ($type == 'xs:decimal') {
-      if ($field->type == 'money') {
-        $output .= '<xs:fractionDigits value="2"/>';
-      }
-      elseif (!empty($field->decimal_length)) {
-        $output .= '<xs:fractionDigits value="' . $field->decimal_length . '"/>';
-      }
-      
-      $length = empty($field->maxlength) ? 17 : $field->maxlength;
-      $output .= '<xs:totalDigits value="' . $length . '"/>';
+
+    switch ($type) {
+      case 'xs:decimal':
+        if ($field->type == 'money') {
+          $output .= '<xs:fractionDigits value="2"/>';
+        }
+        elseif (!empty($field->decimal_length)) {
+          $output .= '<xs:fractionDigits value="' . $field->decimal_length . '"/>';
+        }
+        
+        $length = empty($field->maxlength) ? 17 : $field->maxlength;
+        $output .= '<xs:totalDigits value="' . $length . '"/>';
+        break;
+      case 'localDecimalType':
+        $decimal_length = 0;
+        if ($field->type == 'money') {
+          $decimal_length = 2;
+        }
+        elseif (!empty($field->decimal_length)) {
+          $decimal_length = $field->decimal_length;
+        }
+        $max_length = empty($field->maxlength) ? 17 : $field->maxlength;
+        $int_length = '0,' . ($max_length - $decimal_length);
+        $decimal_length = $decimal_length < 1 ? '0,' : '0,' . $decimal_length;
+        $output .= '<xs:pattern value="(\d{' . $int_length . '}(\.\d{' . $decimal_length . '})?)"/>';
+        break;
     }
     
     $output .= '</xs:restriction>';

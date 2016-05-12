@@ -770,7 +770,7 @@ class WebForm {
       if (empty($field->grid_name)) {
         $xpath = '/' . ltrim(str_replace('[line]', '', $field->xpath), '/');
         $value = $xml->xpath($xpath);
-        $field->value = empty($value) ? '' : (string) $value[0];
+        $field->value = empty($value) ? '' : empty($value[0]->count()) ? (string)$value[0] : rtrim((string)$value[0]);
       }
       else {
         $xpath = explode('[line]', $field->xpath);

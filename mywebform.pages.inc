@@ -131,7 +131,7 @@ function mywebform_xsd_page($tech_name = '') {
 
   $output .= '<xs:simpleType name="localDateType">
                 <xs:restriction base="xs:string">
-                  <xs:pattern value="((\d{1,2}(-|/|.)\d{1,2}(-|/|.)\d{2,4})|(\d{2,4}(-|/|.)\d{1,2}(-|/|.)\d{1,2}))"/>
+                  <xs:pattern value="((\d{1,2}[-|/|.]\d{1,2}[-|/|.]\d{2,4})|(\d{2,4}[-|/|.]\d{1,2}[-|/|.]\d{1,2})([T|:|-|.| ]\d{2,2}[:|.|-]\d{2,2}[:|.|-]\d{2,2})?)?"/>
                 </xs:restriction>
               </xs:simpleType>';
 
